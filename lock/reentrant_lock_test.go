@@ -2,12 +2,12 @@ package lock
 
 import "testing"
 
-func ReentrantMutexTest(t *testing.T) {
+func TestReentrantMutex(t *testing.T) {
 	m := &RecursiveMutex{}
 	m.Lock()
 	m.Lock()
 	m.Lock()
-	if m.recursion != 2 {
+	if m.recursion != 3 {
 		t.Error("reentrant mutex: Wrong number of reentries")
 	}
 	gid := goid()
@@ -23,5 +23,5 @@ func ReentrantMutexTest(t *testing.T) {
 	if m.owner != -1 {
 		t.Error("After releasing the lock, the owner reset error")
 	}
-	
+
 }
