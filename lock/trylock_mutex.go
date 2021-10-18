@@ -13,8 +13,8 @@ import (
 // 这些变量在 monitor_mutex.go 中定义过
 /*
 const (
-	mutexLocked = 1 << iota // 表示锁被持有，值为 1（二进制）
-	mutexWoken // 标记是否有被唤醒的 groutine，值为 10
+	mutexLocked = 1 << iota // 表示锁被持有
+	mutexWoken // 标记是否有被唤醒的 goroutine
 	mutexStarving // 标记是否处于饥饿状态
 	mutexWaiterShift = iota // 标记 记录“等待者数量”的 bits 的起始位置
 )
@@ -35,7 +35,7 @@ func (m *TryLockMutex) TryLock() bool {
 	if old&(mutexLocked|mutexWoken|mutexStarving) != 0 {
 		return false
 	}
-	// 否则当前的锁的状态为：未锁定，并且有其他 groutine 竞争这把锁。则当前 groutine 也尝试竞争。
+	// 否则当前的锁的状态为“未锁定”，并且有其他 goroutine 竞争这把锁。则当前 goroutine 也尝试竞争。
 	new := old | mutexLocked
 	return atomic.CompareAndSwapInt32((*int32)(unsafe.Pointer(&m.Mutex)), old, new)
 }

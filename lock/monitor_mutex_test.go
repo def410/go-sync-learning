@@ -7,11 +7,11 @@ import (
 func TestMutex_IsLocked(t *testing.T) {
 	m := MonitorMutex{}
 	m.Lock()
-	if m.Is(Locked) == false {
+	if m.IsLocked() == false {
 		t.Error("Locked, but the detected state is unlocked")
 	}
 	m.Unlock()
-	if m.Is(Locked) == true {
+	if m.IsLocked() == true {
 		t.Error("Unlock, but the detected state is locked")
 	}
 }
